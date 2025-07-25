@@ -1,0 +1,52 @@
+
+--> RAG hoito agentti
+- nettisivujen haku -> sivun lataus -> embeddings
+--- LUOTETTAVAT TIETOKANNAT, SANOO ETTEI TIEDÄ JOS EI TIEDÄ, KERTOO MISTÄ LÄHTEESTÄ
+-- tallentaa, mutta hakee netistä jos ei löydy mitään tarpeeksi järkevää
+--> HUOM! atolli ei kiinni netissä kun siellä on dataa joten siellähän se ei taida sitten toimia... eli pitäisi demo tehdä synteettisestä datasta ja ladata PAALJON tietoa tietokantaan
+
+-- joko ladataan käytettävät tiedot, sydänpotilaat, diabetes ---> datan syntesisointi isosta määrästä dataa!!!! -> tee useampi query jos useampi asia, tai muuta k=x suuruutta että saa enemmän eri konteksteja.
+- clinical practice guidelines
+--- kääntäminen jossain välissä, olisi datan tai tiedon tai muun kääntäminen englanniksi ja sitten taas suomeksi tai 
+
+
+PIPELINE:
+ask question
+llm formats the question to a search phrase or phrases (example Retrieving from the Vectorstore https://datascience.fm/multi-doc-rag-on-10k-reports/)
+-> EITHER make server with it's own llm for rephrase and summarize and possibly synthesize the web search info
+--> otherwise it would just use the whole prompt to search which we do not want for web search, for vector base search it could work but there also rephrasing would be good and rag had an example of that
+-> if tool call for search do rephrase client side? is that possible? -> maybe not...
+
+
+search from the internet -> return x number of results, block certain sites or only get information from certain websites?
+get text from the pages, save the url from where the information is from so can verify!
+llm again reformats the question to a query or several? (can possibly be done earlier at the same time as the formatting to search phrase)
+find the best contexts from the texts, i.e. don't take all text from the pages and print the url at least if not also the context
+have the llm answer the question based on the context(s), remove hallucination by asking it not to answer if it does not know based on the information in the context.
+
+TODO: MAKE VISUALIZATION OF THIS PIPELINE :D
+
+
+
+
+--> can also make mcp of vector base search that I did for regular rag in my other repository
+-> TODO then make the llm use information from both sources possibly? need to figure out this synthesization of information to give to the llm
+
+RAG / PROMPT AUGMENTATION TODO:
+- scrape medications from the site alongside with all the informations
+- use beautifulsoup to get relevant information to some sort of dataset
+    -> HOW TO SPLIT THE THINGS IN A WAY THAT MAKES SENSE? now split on h2 headers, and have a template of title + use case things
+- use dataset
+    - EITHER:
+        - build rag system with langchain (they have rag tutorial), which I prompt to create synthetic records which have real information
+        - e.g. diabetes stuff, what medication they could use and what kind of adverse events there might be
+    
+NOTE: need to make a pipeline of getting the urls, scraping and doing the vector storage -> simple bash file should do where the scripts are run 
+-> BUT add check if new urls are there or if they changed so don't have to scrape and revectorize everything all the time
+
+
+
+Framework choices:
+web interface streamlit vs. gradio
+mcp vs just tools -> mcp although it is basically the same thing but mcp is more scalable
+vllm? ollama? langchain?? smolagents?

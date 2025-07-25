@@ -45,7 +45,7 @@ async def stream_agent_events(agent, message: str, config: Dict = None):
         async for event in agent.astream_events({"messages": messages}, version="v2"):
             yield event
 
-
+# TODO add rephrase prompt for running web search tool -> can it work? if the client is processing the original llm call? do i really need one server with it's own llm? -> probably :D
 async def run_tool(tool, **kwargs):
     """Run a tool with the provided parameters."""
     return await tool.ainvoke(kwargs)
